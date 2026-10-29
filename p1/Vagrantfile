@@ -1,5 +1,54 @@
 Vagrant.require_version “>= 2.4.7”, “<= 2.4.9”
 
 Vagrant.configure("2") do |config|
-  # v2 configs...
+	# caja base que va a usar vagrant
+	config.vm.box = "bento/ubuntu-24.04"
+
+	# url de la caja base a usar
+	config.vm.box_url = ""
+
+	config.vm.define "isainz-rS" do |control|
+		# hostname del server
+		control.vm.hostname = "isainz-rS"
+
+		# red que se va a usar e IP
+		control.vm.network "private_network", ip "192.168.56.110"
+			virtualbox__intnet: true # porque es una private network
+
+		# configuración del provider de la máquina
+		control.vm.provider "virtualbox" do |v|
+			v.memory = 1024
+			v.cpus = 1
+			v.name = "isainz-rS"
+		end
+		# script que va a ejecutar cuando la máquina esté provisionada
+		config.vm.provision :shell, path: "scripts/server.sh"
+
+			# control.vm.provision "shell", inline: <<-SHELL
+			# [...]
+			# SHELL
+			# 	control.vm.provision "shell", path: "scripts/server.sh"
+	end
+	
+	config.vm.define "isainz-rSW" do |control|
+		# hostname del service worker
+		control.vm.hostname = "isainz-rSW"
+
+		# red que se va a usar e IP
+		control.vm.network "private_network", ip "192.168.56.111"
+			virtualbox__intnet: true # porque es una private network
+
+		# configuración del provider de la máquina
+		control.vm.provider "virtualbox" do |v|
+			v.memory = 1024
+			v.cpus = 1
+			v.name = "isainz-rSW"
+		end
+		# script que va a ejecutar cuando la máquina esté provisionada
+		config.vm.provision :shell, path: "scripts/worker.sh"
+
+			# control.vm.provision "shell", inline: <<-SHELL
+			# [...]
+			# SHELL
+			# 	control.vm.provision "shell", path: "scripts/server.sh"
 end
