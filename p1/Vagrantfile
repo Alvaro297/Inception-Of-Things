@@ -22,7 +22,7 @@ Vagrant.configure("2") do |config|
 			v.name = "isainz-rS"
 		end
 		# script que va a ejecutar cuando la máquina esté provisionada
-		config.vm.provision :shell, path: "scripts/server.sh"
+		control.vm.provision :shell, path: "scripts/server.sh"
 
 			# control.vm.provision "shell", inline: <<-SHELL
 			# [...]
@@ -45,10 +45,11 @@ Vagrant.configure("2") do |config|
 			v.name = "isainz-rSW"
 		end
 		# script que va a ejecutar cuando la máquina esté provisionada
-		config.vm.provision :shell, path: "scripts/worker.sh"
+		control.vm.provision :shell, path: "scripts/worker.sh"
 
 			# control.vm.provision "shell", inline: <<-SHELL
 			# [...]
 			# SHELL
 			# 	control.vm.provision "shell", path: "scripts/server.sh"
+	end
 end
