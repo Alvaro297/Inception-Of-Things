@@ -1,22 +1,30 @@
 #!/bin/bash
 
-# Instala k3s kubernetes en Ubuntu 24.04
-curl -sfL https://get.k3s.io | sudo bash -
+# Instala k3s kubernetes en Ubuntu 24.04, el stable usa la versión estable actual en vez de la última 
+curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=stable sudo bash -
 
 # comprobar la versión
 k3s --version
 
 # comprobar que está corriendo correctamente
 systemctl status k3s.service
+# systemctl status k3s --no-pager | head -12
 
-# crear carpeta ara a configuración de kubeconfig
-mkdir -p ../config/.kube
+# comprobar el nodo y la versión que tiene
+sudo kubectl get nodes -o wide
+sudo crictl version
 
+# K3s writes the admin kubeconfig in /etc/rancher/k3s/k3s.yaml with 600 root mode
+# crear carpeta para la configuración de kubeconfig
+mkdir -p ../.kube/config
 # Copy generated configuration file into ~/.kube/config file
-sudo cp /etc/rancher/k3s/k3s.yaml ../config/.kube
-sudo chown $USER:$USER  ../config/.kube
-echo 'export KUBECONFIG=../config/.kube'|tee -a ~/.bashrc
+sudo cp /etc/rancher/k3s/k3s.yaml ../.kube/config
+sudo chown $(id -u):$(id -g) ../.kube/config
+# sudo chown $USER:$USER  ../.kube/config
+echo "export KUBECONFIG=../.kube/config" >> ~/.bashrc
+# echo 'export KUBECONFIG=../.kube/config'| tee -a ~/.bashrc
 source ~/.bashrc
+# export KUBECONFIG=~/.kube/config
 
 # Test cluster connection using kubectl command.
 kubectl get nodes
