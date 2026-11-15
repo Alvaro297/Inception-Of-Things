@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datos-test
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-pvc
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ["sh", "-c", "echo \"arranque: $(date)\" >> /data/test.txt; sleep 3600"]
+    volumeMounts:
+    - name: datos
+      mountPath: /data
+  volumes:
+  - name: datos
+    persistentVolumeClaim:
+      claimName: datos-test
