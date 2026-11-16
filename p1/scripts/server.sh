@@ -1,4 +1,3 @@
-
 #!/bin/bash
 set -e # hace que el script se detenga si falla un comando.
 
@@ -32,17 +31,6 @@ chown -R vagrant:vagrant /home/vagrant/.kube
 chmod 600 /home/vagrant/.kube/config
 
 echo "K3s server installation completed."
-
-
-
-
-
-
-
-
-
-
-
 
 
 

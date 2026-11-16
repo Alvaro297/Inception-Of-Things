@@ -20,12 +20,8 @@ Vagrant.configure("2") do |config|
 			v.cpus = 1
 		end
 		# script que va a ejecutar cuando la máquina esté provisionada
+		# prepara la máquina e instala K3s en modo servidor
 		server.vm.provision :shell, path: "scripts/server.sh"
-
-			# server.vm.provision "shell", inline: <<-SHELL
-			# [...]
-			# SHELL
-			# 	server.vm.provision "shell", path: "scripts/server.sh"
 	end
 	
 	config.vm.define "isainz-rSW" do |worker|
@@ -43,11 +39,8 @@ Vagrant.configure("2") do |config|
 			v.cpus = 1
 		end
 		# script que va a ejecutar cuando la máquina esté provisionada
+		# prepara la máquina e instala K3s en modo agente para
+		# conectarse con el servidor
 		worker.vm.provision :shell, path: "scripts/worker.sh"
-
-			# worker.vm.provision "shell", inline: <<-SHELL
-			# [...]
-			# SHELL
-			# 	worker.vm.provision "shell", path: "scripts/server.sh"
 	end
 end
